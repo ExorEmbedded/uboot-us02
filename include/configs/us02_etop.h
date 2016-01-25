@@ -34,6 +34,27 @@
 #define CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_PARTITION	1
 #endif
 
+/* Environment setting for EMMC */
+#ifdef CONFIG_ENV_IS_IN_MMC
+
+#ifdef CONFIG_SYS_MMC_ENV_DEV
+#undef CONFIG_SYS_MMC_ENV_DEV
+#endif
+#define CONFIG_SYS_MMC_ENV_DEV		1	/* device 1: EMMC */
+
+#ifdef CONFIG_ENV_OFFSET
+#undef CONFIG_ENV_OFFSET
+#endif
+#define CONFIG_ENV_OFFSET		0	
+
+#ifdef CONFIG_SYS_MMC_ENV_PART 
+#undef CONFIG_SYS_MMC_ENV_PART
+#endif
+#define CONFIG_SYS_MMC_ENV_PART         2  /* BOOT2 partition */
+
+#endif
+
+
 /*
  * Console setup
  */

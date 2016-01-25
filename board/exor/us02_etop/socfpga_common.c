@@ -303,13 +303,11 @@ int board_eth_init(bd_t *bis)
  */
 int board_mmc_init(bd_t *bis)
 {
-#ifdef CONFIG_DWMMC
-	printf("initializing dwmmc...\n");
-	altera_dwmmc_init(CONFIG_SDMMC_BASE, CONFIG_DWMMC_BUS_WIDTH, 0);
-#endif
 #ifdef CONFIG_ULTISDC_SDHCI
-	printf("initializing ultisdc...\n");
-	ultisdc_init(CONFIG_ULTISDC_BASE, 1);
+	ultisdc_init(CONFIG_ULTISDC_BASE, 0);
+#endif
+#ifdef CONFIG_DWMMC
+	altera_dwmmc_init(CONFIG_SDMMC_BASE, CONFIG_DWMMC_BUS_WIDTH, 1);
 #endif
 	return 0;
 }
