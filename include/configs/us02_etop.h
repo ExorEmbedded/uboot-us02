@@ -34,7 +34,16 @@
 #define CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_PARTITION	1
 #endif
 
-/* Environment setting for EMMC */
+/* Bootdelay setting
+ */
+#ifdef CONFIG_BOOTDELAY
+#undef CONFIG_BOOTDELAY
+#endif
+#define CONFIG_BOOTDELAY 0
+#define CONFIG_ZERO_BOOTDELAY_CHECK
+
+/* Environment setting for EMMC 
+ */
 #ifdef CONFIG_ENV_IS_IN_MMC
 
 #ifdef CONFIG_SYS_MMC_ENV_DEV
