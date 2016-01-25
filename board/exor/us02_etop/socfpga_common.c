@@ -33,6 +33,8 @@ extern int ultisdc_init(u32 regbase, int index);
 
 DECLARE_GLOBAL_DATA_PTR;
 
+void ena_rs232phy(void);
+
 /*
  * Reads the hwcfg.txt file from USB stick (root of FATFS partition) if any, parses it
  * and updates the environment variable accordingly.
@@ -130,11 +132,23 @@ int board_late_init(void)
 	char ethaddr[20];
 	char eth1addr[20];
 	char* tmp;
-
+	unsigned long rs232phyena = 0;
+	
+	/* Enable the rs232 phy based on "rs232_txen" environment variable */
+	tmp = getenv("rs232_txen");
+	if(tmp)
+	{
+	  rs232phyena = (simple_strtoul (tmp, NULL, 10))&0xff;
+	  if(rs232phyena != 0)
+	  {
+	    ena_rs232phy();
+	  }
+	}
+	
 	// read settings from SEPROM
 	if (i2cgethwcfg())
 	{
-	  // error!
+	  ena_rs232phy();
 	  printf("Failed to read the HW cfg from the I2C SEEPROM: trying to load it from USB ...\n");
 	  USBgethwcfg();
 	}
@@ -328,4 +342,15 @@ int board_mmc_init(bd_t *bis)
  {
    return altera_dwmmc_init(CONFIG_SDMMC_BASE, CONFIG_DWMMC_BUS_WIDTH, 0);
  }
+#endif
+
+#ifdef CONFIG_HAVEPRGUART
+
+void ena_rs232phy(void)
+{
+  printf("TODO: ena_rs232phy to be implemented !!!\n"); //TODO: implementation required when FPGA design available
+  udelay(1000);
+}
+#else
+void ena_rs232phy(void){}
 #endif

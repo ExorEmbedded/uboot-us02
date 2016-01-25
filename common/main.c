@@ -269,6 +269,15 @@ int abortboot(int bootdelay)
 	}
 
 	putc('\n');
+	
+#ifdef CONFIG_HAVEPRGUART		  
+	if (abort)
+	{
+	  extern void ena_rs232phy(void);
+	  ena_rs232phy();
+	}
+#endif
+
 
 #ifdef CONFIG_SILENT_CONSOLE
 	if (abort)

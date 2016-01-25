@@ -67,6 +67,7 @@
 /*
  * Console setup
  */
+#define CONFIG_HAVEPRGUART
 /* Monitor Command Prompt */
 #define CONFIG_SYS_PROMPT		"SOCFPGA_CYCLONE5 # "
 
