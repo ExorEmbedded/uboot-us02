@@ -33,6 +33,9 @@ extern int ultisdc_init(u32 regbase, int index);
 
 DECLARE_GLOBAL_DATA_PTR;
 
+#define ETOP6XX_VAL   116
+#define ALTERAKIT_VAL 113
+
 void ena_rs232phy(void);
 
 /*
@@ -87,42 +90,6 @@ int board_init(void)
 	return 0;
 }
 
-static void setenv_ethaddr_eeprom(void)
-{
-	uint addr, alen;
-	int linebytes;
-	uchar chip, enetaddr[6], temp;
-
-	/* configuration based on dev kit EEPROM */
-	chip = 0x51;		/* slave ID for EEPROM */
-	alen = 2;		/* dev kit using 2 byte addressing */
-	linebytes = 6;		/* emac address stored in 6 bytes address */
-
-#if (CONFIG_EMAC_BASE == CONFIG_EMAC0_BASE)
-	addr = 0x16c;
-#elif (CONFIG_EMAC_BASE == CONFIG_EMAC1_BASE)
-	addr = 0x174;
-#endif
-
-	i2c_read(chip, addr, alen, enetaddr, linebytes);
-
-	/* swapping endian to match board implementation */
-	temp = enetaddr[0];
-	enetaddr[0] = enetaddr[5];
-	enetaddr[5] = temp;
-	temp = enetaddr[1];
-	enetaddr[1] = enetaddr[4];
-	enetaddr[4] = temp;
-	temp = enetaddr[2];
-	enetaddr[2] = enetaddr[3];
-	enetaddr[3] = temp;
-
-	if (is_valid_ether_addr(enetaddr))
-		eth_setenv_enetaddr("ethaddr", enetaddr);
-	else
-		puts("Skipped ethaddr assignment due to invalid "
-			"EMAC address in EEPROM\n");
-}
 
 #ifdef CONFIG_BOARD_LATE_INIT
 extern int i2cgethwcfg (void);
@@ -132,6 +99,7 @@ int board_late_init(void)
 	char ethaddr[20];
 	char eth1addr[20];
 	char* tmp;
+	unsigned long hwcode;
 	unsigned long rs232phyena = 0;
 	
 	/* Enable the rs232 phy based on "rs232_txen" environment variable */
@@ -152,38 +120,33 @@ int board_late_init(void)
 	  printf("Failed to read the HW cfg from the I2C SEEPROM: trying to load it from USB ...\n");
 	  USBgethwcfg();
 	}
-
-	// set ethernet address
-	setenv_addr("setenv_ethaddr_eeprom", (void *)setenv_ethaddr_eeprom);
-
-        // get ethernet addresses
-        tmp = getenv("ethaddr");
-	if (tmp != NULL)
+	
+	/* Set the "board_name" env. variable according with the "hw_code" */
+	tmp = getenv("hw_code");
+	if(!tmp)
 	{
-		memset(ethaddr, 0x00, sizeof(ethaddr));
-		strncpy(ethaddr, tmp, sizeof(ethaddr)-1);
+	  puts ("WARNING: 'hw_code' environment var not found!\n");
+	  return 1;
 	}
-        else
-		setenv("ethaddr", "FF:FF:FF:FF:FF:FF");
-
-        tmp = getenv("eth1addr");
-	if (tmp != NULL)
+	hwcode = (simple_strtoul (tmp, NULL, 10))&0xff;
+	
+	if(hwcode==ETOP6XX_VAL)
+	  setenv("board_name", "usom_etop6xx"); 
+	else if(hwcode==ALTERAKIT_VAL)
+	  setenv("board_name", "usom_us02kit"); 
+	else
 	{
-		memset(eth1addr, 0x00, sizeof(eth1addr));
-		strncpy(eth1addr, tmp, sizeof(eth1addr)-1);
+	  puts ("WARNING: unknowm carrier hw code; using 'usom_undefined' board name. \n");
+	  setenv("board_name", "usom_undefined");
 	}
-       else
-		setenv("eth1addr", "FF:FF:FF:FF:FF:FF");
-
-        // set bootargs
-	memset(args, 0x00, sizeof(args));
-	snprintf(args, sizeof(args)-1, "setenv bootargs console=ttyS0,115200 root=${mmcroot} rw rootwait hw_code=%s hw_dispid=%s touch_type=%s;bootz ${loadaddr} - ${fdtaddr}",
-			getenv("hw_code"),
-			getenv("hw_dispid"),
-			getenv("touch_type")); 
-	setenv("mmcboot", args);
-
-	printf("bootargs environment variable set to \"%s\"n", args);
+	
+	/* Check if file $0030d8$.bin exists on the 1st partition of the SD-card and, if so, skips booting the mainOS */
+	run_command("setenv skipbsp1 0", 0);
+	run_command("mmc dev 0", 0);
+	run_command("mmc rescan", 0);
+	run_command("if fatload mmc 0:1 $loadaddr /$0030d8$.bin; then setenv skipbsp1 1; fi", 0);
+	
+	setenv("bootcmd", CONFIG_BOOTCOMMAND);
 
 	return 0;
 }
