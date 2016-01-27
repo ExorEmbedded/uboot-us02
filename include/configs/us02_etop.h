@@ -34,6 +34,21 @@
 #define CONFIG_SYS_MMCSD_RAW_MODE_U_BOOT_PARTITION	1
 #endif
 
+/*
+ * Memory allocation (MALLOC)
+ */
+/* Room required on the stack for the environment data */
+#ifdef CONFIG_ENV_SIZE
+#undef CONFIG_ENV_SIZE
+#endif
+#define CONFIG_ENV_SIZE			8192
+/* Size of DRAM reserved for malloc() use */
+#ifdef CONFIG_SYS_MALLOC_LEN
+#undef CONFIG_SYS_MALLOC_LEN
+#endif
+#define CONFIG_SYS_MALLOC_LEN		(CONFIG_ENV_SIZE + 256 * 1024)
+
+
 /* Bootdelay setting
  */
 #ifdef CONFIG_BOOTDELAY
@@ -92,7 +107,6 @@
 	"bootlimit=3\0" \
 	"loadaddr=" __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
 	"fdtaddr=0x00000100\0" \
-	"fdt_high=0xffffffff\0" \
 	"boot_fdt=yes\0" \
 	"skipbsp1=0\0" \
 	"bootpart=0:1\0" \
