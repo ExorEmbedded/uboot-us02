@@ -206,7 +206,7 @@
 		"if test $board_name = usom_etop6xx; then " \
 			"setenv fdtfile usom_etop6xx.dtb; fi; " \
 		"if test $board_name = usom_us02kit; then " \
-			"setenv fdtfile usom_cyclone5_exor.dtb; fi; " \
+			"setenv fdtfile usom_us02kit.dtb; fi; " \
 		"if test $board_name = usom_undefined; then " \
 			"setenv fdtfile usom_undefined.dtb; fi; \0" 
 	
