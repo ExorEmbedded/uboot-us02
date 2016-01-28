@@ -27,6 +27,7 @@ COBJS-$(CONFIG_AT91SAM9XE)	+= bootcount_at91.o
 COBJS-$(CONFIG_BLACKFIN)	+= bootcount_blackfin.o
 COBJS-$(CONFIG_SOC_DA8XX)	+= bootcount_davinci.o
 COBJS-$(CONFIG_BOOTCOUNT_RAM)	+= bootcount_ram.o
+COBJS-$(CONFIG_BOOTCOUNT_I2C)	+= bootcount_i2c.o
 
 COBJS	:= $(COBJS-y)
 SRCS 	:= $(COBJS:.o=.c)
