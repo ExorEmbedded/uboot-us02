@@ -55,10 +55,10 @@ unsigned long sys_mgr_init_table[CONFIG_HPS_PINMUX_NUM] = {
 	0, /* FLASHIO1 */
 	3, /* FLASHIO2 */
 	3, /* FLASHIO3 */
-	0, /* FLASHIO4 */
-	0, /* FLASHIO5 */
-	0, /* FLASHIO6 */
-	0, /* FLASHIO7 */
+	3, /* FLASHIO4 */
+	3, /* FLASHIO5 */
+	3, /* FLASHIO6 */
+	3, /* FLASHIO7 */
 	0, /* FLASHIO8 */
 	3, /* FLASHIO9 */
 	3, /* FLASHIO10 */
@@ -162,17 +162,17 @@ unsigned long sys_mgr_init_table[CONFIG_HPS_PINMUX_NUM] = {
 	1, /* GPLMUX11 */
 	1, /* GPLMUX12 */
 	1, /* GPLMUX13 */
-	0, /* GPLMUX14 */
+	1, /* GPLMUX14 */
 	0, /* GPLMUX15 */
-	0, /* GPLMUX16 */
+	1, /* GPLMUX16 */
 	0, /* GPLMUX17 */
 	0, /* GPLMUX18 */
 	0, /* GPLMUX19 */
 	0, /* GPLMUX20 */
 	0, /* GPLMUX21 */
-	0, /* GPLMUX22 */
+	1, /* GPLMUX22 */
 	0, /* GPLMUX23 */
-	0, /* GPLMUX24 */
+	1, /* GPLMUX24 */
 	0, /* GPLMUX25 */
 	0, /* GPLMUX26 */
 	0, /* GPLMUX27 */
@@ -200,7 +200,7 @@ unsigned long sys_mgr_init_table[CONFIG_HPS_PINMUX_NUM] = {
 	1, /* GPLMUX49 */
 	1, /* GPLMUX50 */
 	0, /* GPLMUX51 */
-	0, /* GPLMUX52 */
+	1, /* GPLMUX52 */
 	1, /* GPLMUX53 */
 	1, /* GPLMUX54 */
 	1, /* GPLMUX55 */

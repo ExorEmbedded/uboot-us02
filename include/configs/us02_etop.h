@@ -92,6 +92,15 @@
 #define CONFIG_HAVEPRGUART
 /* Monitor Command Prompt */
 #define CONFIG_SYS_PROMPT		"US02 # "
+/* Buffer sizes */
+#undef  CONFIG_SYS_CBSIZE
+#undef  CONFIG_SYS_PBSIZE
+#define CONFIG_SYS_CBSIZE		512
+#define CONFIG_SYS_PBSIZE		(CONFIG_SYS_CBSIZE + sizeof(CONFIG_SYS_PROMPT) + 16)
+/* Boot Argument Buffer Size */
+#undef  CONFIG_SYS_BARGSIZE
+#define CONFIG_SYS_BARGSIZE		CONFIG_SYS_CBSIZE
+
 
 /* EMAC controller and PHY used */
 #define CONFIG_EMAC_BASE		CONFIG_EMAC1_BASE

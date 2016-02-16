@@ -29,6 +29,19 @@
 
 #include <asm/arch/dwmmc.h>
 
+#define GPIO_SWPORTA_DR        0x00
+#define GPIO_SWPORTA_DDR       0x04
+#define GPIO_INTEN             0x30
+#define GPIO_INTMASK           0x34
+#define GPIO_INTTYPE_LEVEL     0x38
+#define GPIO_INT_POLARITY      0x3c
+#define GPIO_INTSTATUS         0x40
+#define GPIO_PORTA_DEBOUNCE    0x48
+#define GPIO_PORTA_EOI         0x4c
+#define GPIO_EXT_PORTA         0x50
+#define GPIO0BASE              0xff708000
+#define TXENGPIO               22 
+
 extern int ultisdc_init(u32 regbase, int index);
 
 DECLARE_GLOBAL_DATA_PTR;
@@ -311,7 +324,9 @@ int board_mmc_init(bd_t *bis)
 
 void ena_rs232phy(void)
 {
-  printf("TODO: ena_rs232phy to be implemented !!!\n"); //TODO: implementation required when FPGA design available
+  setbits_le32(GPIO0BASE + GPIO_SWPORTA_DDR, 1 << TXENGPIO);
+  setbits_le32(GPIO0BASE + GPIO_SWPORTA_DR, 1 << TXENGPIO);
+  
   udelay(1000);
 }
 #else
