@@ -41,6 +41,8 @@
 #define GPIO_EXT_PORTA         0x50
 #define GPIO0BASE              0xff708000
 #define TXENGPIO               22 
+#define AGPIO0BASE             0xff210010
+#define QSPISELGPIO            2
 
 extern int ultisdc_init(u32 regbase, int index);
 
@@ -114,6 +116,9 @@ int board_late_init(void)
 	char* tmp;
 	unsigned long hwcode;
 	unsigned long rs232phyena = 0;
+	
+	/* Connect the QSPI Flash to the HPS port, so that it will be possible to perform FPGA updates*/
+	setbits_le32(AGPIO0BASE , 1 << QSPISELGPIO);
 	
 	/* Enable the rs232 phy based on "rs232_txen" environment variable */
 	tmp = getenv("rs232_txen");
