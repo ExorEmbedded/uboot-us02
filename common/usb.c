@@ -477,6 +477,7 @@ static int usb_get_descriptor(struct usb_device *dev, unsigned char type,
 			unsigned char index, void *buf, int size)
 {
 	int res;
+	mdelay(50); /* This delay helps to retrieve the descriptor of most USB sticks */
 	res = usb_control_msg(dev, usb_rcvctrlpipe(dev, 0),
 			USB_REQ_GET_DESCRIPTOR, USB_DIR_IN,
 			(type << 8) + index, 0,

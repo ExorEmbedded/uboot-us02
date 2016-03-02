@@ -560,6 +560,7 @@ int submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 	dwc_otg_host_if_t *host_if = g_core_if.host_if;
 	dwc_otg_hc_regs_t *hc_regs = host_if->hc_regs[CHANNEL];
 	hcint_data_t hcint_new;
+	int count;
 	/* For CONTROL endpoint pid should start with DATA1 */
 	int status_direction;
 
@@ -597,12 +598,17 @@ int submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
 	hcchar.b.chdis = 0;
 	dwc_write_reg32(&hc_regs->hcchar, hcchar.d32);
 
-	/* TODO: no endless loop */
+	/* no endless loop */
+	count = 0;
 	while (1) {
 		hcint_new.d32 = dwc_read_reg32(&hc_regs->hcint);
 		if (hcint_new.b.chhltd) {
 			break;
 		}
+		mdelay(1);
+		count++;
+		if(count > 5000)
+		  break;
 	}
 
 	/* TODO: check for error */
