@@ -126,7 +126,9 @@ static int mmc_load_image_mbr(struct mmc *mmc)
 		}
 		p_entry += MBR_PARTITION_ENTRY_SIZE;
 	}
-
+	
+	if(i == MBR_NUM_OF_PARTITIONS)
+	  return -1;
 
 	/* read image header to find the image size & load address */
 	err = mmc->block_dev.block_read(0,
