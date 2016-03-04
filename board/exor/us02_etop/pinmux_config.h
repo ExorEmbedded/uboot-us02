@@ -38,7 +38,7 @@
 #define CONFIG_HPS_SDMMC (1)
 #define CONFIG_HPS_QSPI (1)
 #define CONFIG_HPS_UART0 (1)
-#define CONFIG_HPS_UART1 (1)
+#define CONFIG_HPS_UART1 (0)
 #define CONFIG_HPS_TRACE (0)
 #define CONFIG_HPS_I2C0 (1)
 #define CONFIG_HPS_I2C1 (0)
@@ -59,14 +59,14 @@
 #define CONFIG_HPS_QSPI_CS0 (1)
 
 #define CONFIG_HPS_UART0_TX (1)
-#define CONFIG_HPS_UART0_CTS (0)
-#define CONFIG_HPS_UART0_RTS (0)
+#define CONFIG_HPS_UART0_CTS (1)
+#define CONFIG_HPS_UART0_RTS (1)
 #define CONFIG_HPS_UART0_RX (1)
 
-#define CONFIG_HPS_UART1_TX (1)
-#define CONFIG_HPS_UART1_CTS (1)
-#define CONFIG_HPS_UART1_RTS (1)
-#define CONFIG_HPS_UART1_RX (1)
+#define CONFIG_HPS_UART1_TX (0)
+#define CONFIG_HPS_UART1_CTS (0)
+#define CONFIG_HPS_UART1_RTS (0)
+#define CONFIG_HPS_UART1_RX (0)
 
 
 /* Pin MUX data */
