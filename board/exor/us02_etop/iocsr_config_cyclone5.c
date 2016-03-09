@@ -57,7 +57,7 @@ const unsigned long iocsr_scan_chain0_table[((CONFIG_HPS_IOCSR_SCANCHAIN0_LENGTH
 };
 
 const unsigned long iocsr_scan_chain1_table[((CONFIG_HPS_IOCSR_SCANCHAIN1_LENGTH / 32) + 1)] = {
-	0x00100000,
+	0x000C0300,
 	0x300C0000,
 	0x300000C0,
 	0x000000C0,
