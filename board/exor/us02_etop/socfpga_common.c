@@ -50,6 +50,7 @@ DECLARE_GLOBAL_DATA_PTR;
 
 #define ETOP6XX_VAL   116
 #define ALTERAKIT_VAL 113
+#define US05KIT_VAL   135
 
 void ena_rs232phy(void);
 
@@ -152,6 +153,8 @@ int board_late_init(void)
 	  setenv("board_name", "usom_etop6xx"); 
 	else if(hwcode==ALTERAKIT_VAL)
 	  setenv("board_name", "usom_us02kit"); 
+	else if(hwcode==US05KIT_VAL)
+	  setenv("board_name", "usom_us05kit"); 
 	else
 	{
 	  puts ("WARNING: unknowm carrier hw code; using 'usom_undefined' board name. \n");

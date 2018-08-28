@@ -237,8 +237,10 @@
 			"setenv fdtfile usom_etop6xx.dtb; fi; " \
 		"if test $board_name = usom_us02kit; then " \
 			"setenv fdtfile usom_us02kit.dtb; fi; " \
+		"if test $board_name = usom_us05kit; then " \
+			"setenv fdtfile usom_us05kit.dtb; fi; " \
 		"if test $board_name = usom_undefined; then " \
-			"setenv fdtfile usom_undefined.dtb; fi; \0" 
+			"setenv fdtfile socfpga.dtb; fi; \0" 
 	
 #define CONFIG_BOOTCOMMAND \
 	"setenv mmcdev 0; " \
