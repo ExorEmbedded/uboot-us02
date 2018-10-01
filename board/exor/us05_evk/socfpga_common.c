@@ -137,7 +137,10 @@ int board_late_init(void)
 	else if(hwcode==ALTERAKIT_VAL)
 	  setenv("board_name", "usom_us02kit"); 
 	else if(hwcode==US05KIT_VAL)
-	  setenv("board_name", "usom_us05kit"); 
+	  if(!getenv("eth3addr"))
+	    setenv("board_name", "usom_us05kit");      /* Same hw_code but different board name/dtb file based on number of defined MAC addresses */
+	  else
+	    setenv("board_name", "usom_us05kit-4mac"); 
 	else
 	{
 	  puts ("WARNING: unknowm carrier hw code; using 'usom_undefined' board name. \n");

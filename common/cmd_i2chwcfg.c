@@ -83,6 +83,9 @@
 #define AUXMACID4_POS                   59
 #define AUXMACID5_POS                   60
 
+#define THIRDMACID_POS                  49
+#define FOURTHMACID_POS                 43
+
 /*=======================================================================
  * I2C pre-defined / fixed values
  *======================================================================= */
@@ -280,6 +283,18 @@ int i2cgethwcfg (void)
 
   /* get 2nd eth mac ID */
   eth_setenv_enetaddr("eth1addr", &(buf[AUXMACID0_POS]));
+  
+  /* Get 3rd MAC ID, if valid. Otherwise remove the related env. var. */
+  if(!is_valid_ether_addr(&buf[THIRDMACID_POS]))
+    setenv("eth2addr","");
+  else
+    eth_setenv_enetaddr("eth2addr", &(buf[THIRDMACID_POS]));
+
+  /* Get 4th MAC ID, if valid. Otherwise remove the related env. var. */
+  if(!is_valid_ether_addr(&buf[FOURTHMACID_POS]))
+    setenv("eth3addr","");
+  else
+    eth_setenv_enetaddr("eth3addr", &(buf[FOURTHMACID_POS]));
  
   return 0;
 }
@@ -373,6 +388,28 @@ int do_i2csavehw ( cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	puts ("WARNING: 'eth1addr' environment var not found!\n");
   }
 
+  /* 3rd mac address handling */
+  if (eth_getenv_enetaddr("eth2addr", hw_addr))
+  {
+	buf[THIRDMACID_POS+0] = hw_addr[0];
+	buf[THIRDMACID_POS+1] = hw_addr[1];
+	buf[THIRDMACID_POS+2] = hw_addr[2];
+	buf[THIRDMACID_POS+3] = hw_addr[3];
+	buf[THIRDMACID_POS+4] = hw_addr[4];
+	buf[THIRDMACID_POS+5] = hw_addr[5];
+  }
+
+  /* 4th mac address handling */
+  if (eth_getenv_enetaddr("eth3addr", hw_addr))
+  {
+	buf[FOURTHMACID_POS+0] = hw_addr[0];
+	buf[FOURTHMACID_POS+1] = hw_addr[1];
+	buf[FOURTHMACID_POS+2] = hw_addr[2];
+	buf[FOURTHMACID_POS+3] = hw_addr[3];
+	buf[FOURTHMACID_POS+4] = hw_addr[4];
+	buf[FOURTHMACID_POS+5] = hw_addr[5];
+  }
+  
   /* hw_code handling */
   tmp = getenv("hw_code");
   if(!tmp)
